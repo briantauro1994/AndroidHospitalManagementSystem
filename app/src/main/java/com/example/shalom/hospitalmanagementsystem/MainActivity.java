@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -21,12 +20,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import jsonDtos.LoginDto;
@@ -47,7 +44,8 @@ Button login;
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-new AsyncHttpTask().execute();
+                final String url = "http://10.4.5.139:8080/HospitalManagementServer/Login";
+                new AsyncHttpTask().execute(url);
             }
         });
     }
@@ -98,9 +96,8 @@ new AsyncHttpTask().execute();
 
             JSONArray posts = response.optJSONArray("posts");*/
 
-        Type type = new TypeToken<List<StringDto>>() {
-        }.getType();
-        StringDto in = new Gson().fromJson(result, type);
+
+        StringDto in = new Gson().fromJson(result, StringDto.class);
 
         Log.d(TAG, in.getMessage());
 
