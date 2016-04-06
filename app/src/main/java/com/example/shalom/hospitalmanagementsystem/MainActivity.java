@@ -180,7 +180,7 @@ Button login;
 
             if (result == 1) {
 
-                intent = new Intent(getApplicationContext(), ViewImage.class);
+                intent = new Intent(getApplicationContext(), Home.class);
                 startActivity(intent);
             } else {
                 Log.e(TAG, "Failed to fetch data!");

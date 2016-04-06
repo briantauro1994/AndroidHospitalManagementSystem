@@ -6,15 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -25,45 +20,34 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jsonDtos.PatInfoDto;
 import jsonDtos.PatientDto;
 import jsonDtos.StringDto;
 
-public class Image extends AppCompatActivity {
-    static StringDto in;
-    Intent intent1;
-    String TAG = "Debugg";
-    Button enter;
-    EditText ed1;
-    ImageView ed2;
-    ArrayList<String> pp;
-    ArrayAdapter ld;
-
+public class PatientgetInfo extends AppCompatActivity {
+    Button b1;
+    EditText ed;
     Intent intent;
-    ListView l1;
+    String TAG = "debugg";
     List<StringDto> inpList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image);
-        enter = (Button) findViewById(R.id.b1);
-        ed1 = (EditText) findViewById(R.id.ed1);
-        l1 = (ListView) findViewById(R.id.l1);
-        intent1 = new Intent(getApplicationContext(), ViewImage.class);
-
-        enter.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_patientget_info);
+        b1 = (Button) findViewById(R.id.button2);
+        ed = (EditText) findViewById(R.id.ed1);
+        b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String url = "http://10.4.5.139:8080/HospitalManagementServer/Image";
+                final String url = "http://10.4.5.139:8080/HospitalManagementServer/PatientInfo";
                 new AsyncHttpTask().execute(url);
             }
         });
@@ -110,19 +94,16 @@ public class Image extends AppCompatActivity {
 
             JSONArray posts = response.optJSONArray("posts");*/
 
-        Type type = new TypeToken<List<StringDto>>() {
-        }.getType();
-        inpList = new Gson().fromJson(result, type);
-        pp = new ArrayList<String>();
-        for (int i = 0; i < inpList.size(); i++) {
-            pp.add(("" + i + 1));
-        }
+
+        PatInfoDto in = new Gson().fromJson(result, PatInfoDto.class);
+
+        new StaticObjects().setPatInfoDto(in);
 
     }
 
     class AsyncHttpTask extends AsyncTask<String, Void, Integer> {
 
-        String id = ed1.getText().toString();
+        String id = ed.getText().toString();
 
 
         @Override
@@ -197,38 +178,9 @@ public class Image extends AppCompatActivity {
             if (result == 1) {
 
 
-                byte[] decodedString = null;
-                try {
-                    decodedString = Base64.decode(inpList.get(0).getMessage().getBytes());
-                    ld = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1, pp);
-                    l1.setAdapter(ld);
-                    l1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            ArrayList<String> as = new ArrayList<String>();
+                intent = new Intent(getApplicationContext(), PatientPersonalInformation.class);
+                startActivity(intent);
 
-                            for (int ip = 0; ip < pp.size(); ip++) {
-                                as.add(inpList.get(ip).getMessage());
-                            }
-
-                            StaticObjects staticObjects = new StaticObjects();
-                            staticObjects.setHt(as);
-
-                            intent1.putExtra("pos", position);
-                            startActivity(intent1);
-
-                        }
-                    });
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    Log.d("ErrorHere", "" + e);
-                }
-                Log.d("St--", ":" + decodedString.length);
-             /*   Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0,
-                        decodedString.length);
-
-                ed2.setImageBitmap(bitmap);*/
 
             } else {
                 Log.e(TAG, "Failed to fetch data!");
@@ -236,5 +188,7 @@ public class Image extends AppCompatActivity {
         }
     }
 }
+
+
 
 
