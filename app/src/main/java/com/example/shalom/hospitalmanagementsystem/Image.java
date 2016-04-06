@@ -1,6 +1,8 @@
 package com.example.shalom.hospitalmanagementsystem;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 
@@ -26,34 +29,33 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import jsonDtos.LoginDto;
+import jsonDtos.PatientDto;
 import jsonDtos.StringDto;
 
-public class MainActivity extends AppCompatActivity {
-Button login;
-    EditText username,password;
+public class Image extends AppCompatActivity {
+    static StringDto in;
+    Intent intent1;
+    String TAG = "Debugg";
+    Button enter;
+    EditText ed1;
+    ImageView ed2;
     Intent intent;
-    String TAG="Debugg";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        login=(Button)findViewById(R.id.button);
-        username=(EditText)findViewById(R.id.editText);
-        password=(EditText)findViewById(R.id.editText2);
-        login.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_image);
+        enter = (Button) findViewById(R.id.b1);
+        ed1 = (EditText) findViewById(R.id.ed1);
+        ed2 = (ImageView) findViewById(R.id.ed2);
+        enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String url = "http://10.4.5.139:8080/HospitalManagementServer/Login";
+                final String url = "http://10.4.5.139:8080/HospitalManagementServer/Image";
                 new AsyncHttpTask().execute(url);
             }
         });
     }
-
-
-
-
-
 
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
@@ -97,7 +99,7 @@ Button login;
             JSONArray posts = response.optJSONArray("posts");*/
 
 
-        StringDto in = new Gson().fromJson(result, StringDto.class);
+        in = new Gson().fromJson(result, StringDto.class);
 
         Log.d(TAG, in.getMessage());
 
@@ -105,8 +107,8 @@ Button login;
 
     class AsyncHttpTask extends AsyncTask<String, Void, Integer> {
 
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
+        String id = ed1.getText().toString();
+
 
         @Override
         protected Integer doInBackground(String... params) {
@@ -127,14 +129,13 @@ Button login;
                 /* optional request header */
                 urlConnection.setRequestProperty("Accept", "application/json");
 
-                LoginDto loginDto = null;
+                PatientDto patientDto = null;
 
-                loginDto = new LoginDto();
-                loginDto.setName(user);
-                loginDto.setPassword(pass);
+                patientDto = new PatientDto();
+                patientDto.setId(id);
 
 
-                String s = new Gson().toJson(loginDto);
+                String s = new Gson().toJson(patientDto);
 
                 OutputStream os = urlConnection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
@@ -171,7 +172,7 @@ Button login;
             }
 
             return result; //"Failed to fetch data!";
-    }
+        }
 
 
         @Override
@@ -179,12 +180,25 @@ Button login;
             /* Download complete. Lets update UI */
 
             if (result == 1) {
+                byte[] decodedString = null;
+                try {
+                    decodedString = Base64.decode(in.getMessage().getBytes());
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    Log.d("ErrorHere", "" + e);
+                }
+                Log.d("St--", ":" + decodedString.length);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0,
+                        decodedString.length);
 
-                intent = new Intent(getApplicationContext(), ViewImage.class);
-                startActivity(intent);
+                ed2.setImageBitmap(bitmap);
+
             } else {
                 Log.e(TAG, "Failed to fetch data!");
             }
         }
     }
 }
+
+
