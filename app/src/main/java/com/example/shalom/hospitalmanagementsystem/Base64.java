@@ -29,16 +29,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-/**
- * <p>
- * Base64 encoding and decoding utility methods, both for binary and textual
- * informations.
- * </p>
- *
- * @author Carlo Pelliccia
- * @version 1.3
- * @since 1.1
- */
 public class Base64 {
 
     /**

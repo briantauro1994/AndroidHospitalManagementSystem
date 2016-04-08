@@ -10,6 +10,7 @@ import jsonDtos.PatInfoDto;
  */
 public class StaticObjects {
     static ArrayList<String> ht;
+
     static PatInfoDto patInfoDto;
     static PatHistoryDto patHistoryDto;
 
