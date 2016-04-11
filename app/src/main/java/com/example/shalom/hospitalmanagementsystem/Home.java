@@ -26,6 +26,8 @@ public class Home extends Activity {
         as.add("View Patient History");
         as.add("View Patient Image");
         as.add("View Patient Videos");
+        as.add("Doctor Forum Chat");
+
         ad = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, as);
         listView.setAdapter(ad);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -42,6 +44,9 @@ public class Home extends Activity {
                 else if(position==3)
                 {
                     intent = new Intent(getApplicationContext(), Videos.class);
+                }
+                else if (position == 4) {
+                    intent = new Intent(getApplicationContext(), DoctorList.class);
                 }
                 startActivity(intent);
             }

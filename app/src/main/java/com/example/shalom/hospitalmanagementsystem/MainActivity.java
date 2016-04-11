@@ -98,7 +98,7 @@ Button login;
 
 
         StringDto in = new Gson().fromJson(result, StringDto.class);
-
+new StaticObjects().setPhoneno(in.getMessage());
         Log.d(TAG, in.getMessage());
 
     }

@@ -2,6 +2,7 @@ package com.example.shalom.hospitalmanagementsystem;
 
 import java.util.ArrayList;
 
+import jsonDtos.DoctorMessageDto;
 import jsonDtos.PatHistoryDto;
 import jsonDtos.PatInfoDto;
 
@@ -10,12 +11,29 @@ import jsonDtos.PatInfoDto;
  */
 public class StaticObjects {
     static ArrayList<String> ht;
-
+static String phoneno;
     static PatInfoDto patInfoDto;
     static PatHistoryDto patHistoryDto;
+static ArrayList<DoctorMessageDto> doctorMessageDto;
+
+    public ArrayList<DoctorMessageDto> getDoctorMessageDto() {
+        return doctorMessageDto;
+    }
+
+    public void setDoctorMessageDto(ArrayList<DoctorMessageDto> doctorMessageDto) {
+        this.doctorMessageDto = doctorMessageDto;
+    }
 
     public PatInfoDto getPatInfoDto() {
         return patInfoDto;
+    }
+
+    public String getPhoneno() {
+        return phoneno;
+    }
+
+    public void setPhoneno(String phoneno) {
+        this.phoneno = phoneno;
     }
 
     public void setPatInfoDto(PatInfoDto patInfoDto) {

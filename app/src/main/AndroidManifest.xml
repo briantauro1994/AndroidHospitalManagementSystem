@@ -29,7 +29,9 @@
         <activity android:name=".PatientgetHistory" />
         <activity android:name=".PatientgetInfo" />
         <activity android:name=".Videos" />
-        <activity android:name=".ViewVideos"></activity>
+        <activity android:name=".ViewVideos" />
+        <activity android:name=".DoctorList" />
+        <activity android:name=".DoctorChat"></activity>
     </application>
 
 </manifest>
